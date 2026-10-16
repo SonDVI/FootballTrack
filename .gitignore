@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Input videos, model weights and generated outputs
+/raw/data/*
+!/raw/data/.gitkeep
+/models/*
+!/models/.gitkeep
+/outputs/**
+!/outputs/**/
+!/outputs/**/.gitkeep
+
+# Operating system files
+.DS_Store
+Thumbs.db
