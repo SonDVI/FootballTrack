@@ -21,11 +21,20 @@ FootBallTrack/
 │   ├── videos/             # Video kết quả
 │   ├── frames/             # Ảnh frame để quan sát và kiểm tra lỗi
 │   └── tracks/             # Dữ liệu tracking xuất ra CSV/JSON
-└── docs/
-    └── experiment_log.md   # Nhật ký thử nghiệm và phân tích lỗi
+├── docs/
+│   └── experiment_log.md   # Nhật ký thử nghiệm và phân tích lỗi
+└── versions/              # Bản chụp code và ghi chú theo buổi học
+    ├── 2026-10-16-v01/
+    └── 2026-10-17-v02/
 ```
 
 Các file `.gitkeep` chỉ giúp Git giữ lại thư mục trống, không phải code xử lý.
+
+## Tiến độ ngày 17/10/2026
+
+`test1.py` hiện hiển thị video trong cửa sổ 640 × 360, chờ phím ở mỗi frame bằng `waitKey(0)`, và lưu ảnh theo số thứ tự vào `outputs/frames/`. Đường dẫn ảnh đã tồn tại sẽ được bỏ qua; chương trình vẫn đọc video từ đầu. Đã thêm giải phóng nguồn video và đóng cửa sổ sau vòng lặp.
+
+Xem [ghi chú v02](versions/2026-10-17-v02/README.md) để biết thay đổi, giới hạn và cách chạy bản lưu. Chưa triển khai detection hoặc tracking.
 
 ## Luồng dữ liệu dự kiến
 
