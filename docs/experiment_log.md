@@ -26,3 +26,14 @@ Ví dụ câu hỏi: Khi hai người chạy cắt ngang nhau, ID có bị đổ
 - Giới hạn: vẫn dùng `waitKey(0)`; bỏ qua theo tên file, không theo nội dung; chưa kiểm tra kết quả trả về của `imwrite`.
 - Sản phẩm: ảnh trong `outputs/frames/` (không commit); code và ghi chú trong `versions/2026-10-17-v02/`.
 - Tiếp theo: sửa chú thích `waitKey(0)`, kiểm tra ghi ảnh thành công và thử chỉ lưu những frame được chọn.
+
+## 19/10/2026 — Hoàn tất bài 18/10 và thử detection
+
+- Lấy mẫu cùng 300 frame đầu: every_15 có 20 ảnh, every_30 có 10 ảnh, every_60 có 5 ảnh. Code lấy frame hiện cấu hình interval=60, waitKey(15), kiểm tra kết quả ghi ảnh.
+- Thêm thử nghiệm detection YOLO11n pretrained, CPU, conf=0.25, imgsz=640, classes=[0]. Nạp model một lần và duyệt ảnh theo số frame; bỏ qua output đã có.
+- Đầu ra: 10 ảnh trong `outputs/detection/yolo11n/every_30/`; ảnh, video và trọng số không commit.
+- Log người học: frame 30 có 14 detection person. Chưa có ground truth để kết luận độ chính xác.
+- Validation: cú pháp Python hợp lệ; bản chụp khớp nguồn theo SHA256; chưa chạy lại model trong terminal của trợ lý.
+- Giới hạn: while thừa trong detection; nhấn q thoát trước khi lưu ảnh đang xem; chưa so sánh YOLO11s hoặc tính metric.
+- Bản lưu: `versions/2026-10-19-v03/`. Giữ nguyên implementation khi chụp version.
+- Tiếp theo: xem và phân tích lỗi trên ảnh detection; chuẩn bị nhãn và bộ test chung trước khi so sánh model.

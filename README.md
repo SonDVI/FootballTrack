@@ -25,16 +25,19 @@ FootBallTrack/
 │   └── experiment_log.md   # Nhật ký thử nghiệm và phân tích lỗi
 └── versions/              # Bản chụp code và ghi chú theo buổi học
     ├── 2026-10-16-v01/
-    └── 2026-10-17-v02/
+    ├── 2026-10-17-v02/
+    └── 2026-10-19-v03/
 ```
 
 Các file `.gitkeep` chỉ giúp Git giữ lại thư mục trống, không phải code xử lý.
 
-## Tiến độ ngày 17/10/2026
+## Tiến độ ngày 19/10/2026
 
-`test1.py` hiện hiển thị video trong cửa sổ 640 × 360, chờ phím ở mỗi frame bằng `waitKey(0)`, và lưu ảnh theo số thứ tự vào `outputs/frames/`. Đường dẫn ảnh đã tồn tại sẽ được bỏ qua; chương trình vẫn đọc video từ đầu. Đã thêm giải phóng nguồn video và đóng cửa sổ sau vòng lặp.
+`test1.py` hiện lấy mẫu theo `frame_interval`, lưu vào `outputs/frames/every_{frame_interval}/`, dừng sau 300 frame và dùng `waitKey(15)`. Giá trị hiện tại là 60. Đường dẫn ảnh đã tồn tại sẽ được bỏ qua; kết quả ghi ảnh được kiểm tra.
 
-Xem [ghi chú v02](versions/2026-10-17-v02/README.md) để biết thay đổi, giới hạn và cách chạy bản lưu. Chưa triển khai detection hoặc tracking.
+`src/detection/test_img.py` chạy YOLO11n trên các ảnh trong `outputs/frames/every_30/`, chỉ lấy lớp person và lưu ảnh có box vào `outputs/detection/yolo11n/every_30/`. Detection chờ phím từng ảnh, bỏ qua output đã có. Đã có 10 file kết quả tại thời điểm lưu; chưa đánh giá bằng nhãn chuẩn hoặc triển khai tracking.
+
+Chạy từ thư mục gốc bằng `python src/detection/test_img.py`, trong môi trường có OpenCV và Ultralytics; cần trọng số `models/yolo11n.pt` và ảnh đầu vào trên máy. Xem [ghi chú v03](versions/2026-10-19-v03/README.md) để biết thay đổi, giới hạn và cách chạy bản lưu.
 
 ## Luồng dữ liệu dự kiến
 
@@ -57,7 +60,7 @@ Phần đọc video cung cấp từng frame. Detection trả về vị trí đ�
 4. Sau đó mới bổ sung detection trên một ảnh, detection trên video và tracking.
 5. Khi một phần đã hiểu và chạy được, chuyển phần đó vào thư mục tương ứng trong `src/`.
 
-Hiện cấu trúc này chưa có implementation detection/tracking và chưa xác nhận môi trường chạy. Chưa tạo danh sách dependency hoặc chốt phiên bản thư viện; bổ sung khi thiết lập môi trường và kiểm tra thực tế.
+Đã có thử nghiệm detection pretrained trên ảnh; chưa triển khai tracking. Chưa tạo danh sách dependency hoặc chốt phiên bản thư viện, nên môi trường chưa được chuẩn hóa để tái lập trên máy khác.
 
 ## Quy ước
 

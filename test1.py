@@ -14,6 +14,8 @@ if cap.isOpened():
     frame_count = 0
     cv2.namedWindow("FootballTrack", cv2.WINDOW_NORMAL)
     cv2.resizeWindow("FootballTrack", 640, 360)
+    #Choose frame interval
+    frame_interval = 60
     while True:
         #Take img each frame, success for check if is it success or not
         success, img = cap.read()
@@ -24,16 +26,26 @@ if cap.isOpened():
         #Display img(frame)
         cv2.imshow("FootballTrack", img)
 
-        #waitKey = delay, = 0 <=> when i press 0 it runs (depend on admin)
-        key = cv2.waitKey(0)
+        #WaitKey updated to 15 means 1 frame will stop 15 ms then move to next one
+        key = cv2.waitKey(15)
 
         #Logic saves Img but not duplicated
         frame_count += 1
-        file_path = Path(f"outputs/frames/{frame_count}_frame.jpg")
+        if frame_count % frame_interval == 0:
+            file_path = Path(f"outputs/frames/every_{frame_interval}/{frame_count}_frame.jpg")
 
-        if not file_path.exists():
-            cv2.imwrite(str(file_path), img)
-
+            if not file_path.exists():
+                
+                #cv2.imwrite() return True/False so saved is checked variable and also saved img in folder
+                saved = cv2.imwrite(str(file_path), img)
+                #if img is saved in folder
+                if saved:
+                    print(f"Saved: {file_path.name}")
+                #if not
+                else:
+                    print(f"Failed To Save: {file_path.name}")
+        if frame_count >= 300:
+            break
         #Quit the display
         if key & 0xFF == ord("q"):
             break
