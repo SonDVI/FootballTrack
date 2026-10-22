@@ -1,4 +1,12 @@
 {
   "python-envs.defaultEnvManager": "ms-python.python:system",
-  "python-envs.defaultPackageManager": "ms-python.python:pip"
+  "python-envs.defaultPackageManager": "ms-python.python:pip",
+  "python.defaultInterpreterPath": "C:\\Users\\nitro lite 16\\anaconda3\\envs\\footballtrack_env\\python.exe",
+  "terminal.integrated.profiles.windows": {
+    "FootballTrack (Conda)": {
+      "path": "C:\\Windows\\System32\\cmd.exe",
+      "args": "/K call \"C:\\Users\\nitro lite 16\\anaconda3\\condabin\\conda.bat\" activate \"C:\\Users\\nitro lite 16\\anaconda3\\envs\\footballtrack_env\""
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "FootballTrack (Conda)"
 }

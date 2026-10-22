@@ -20,24 +20,35 @@ FootBallTrack/
 ├── outputs/
 │   ├── videos/             # Video kết quả
 │   ├── frames/             # Ảnh frame để quan sát và kiểm tra lỗi
+│   ├── detection/          # Ảnh đã vẽ box theo model và lần thử
+│   ├── speed/              # CSV thời gian chạy theo model/interval
 │   └── tracks/             # Dữ liệu tracking xuất ra CSV/JSON
 ├── docs/
-│   └── experiment_log.md   # Nhật ký thử nghiệm và phân tích lỗi
+│   ├── experiment_log.md   # Nhật ký thử nghiệm và phân tích lỗi
+│   ├── detection_model_comparison.md
+│   └── benchmarks/         # Bằng chứng đo tốc độ được giữ trong Git
 └── versions/              # Bản chụp code và ghi chú theo buổi học
     ├── 2026-10-16-v01/
     ├── 2026-10-17-v02/
-    └── 2026-10-19-v03/
+    ├── 2026-10-19-v03/
+    └── 2026-10-22-v04/
 ```
 
 Các file `.gitkeep` chỉ giúp Git giữ lại thư mục trống, không phải code xử lý.
 
-## Tiến độ ngày 19/10/2026
+## Tiến độ ngày 22/10/2026
 
 `test1.py` hiện lấy mẫu theo `frame_interval`, lưu vào `outputs/frames/every_{frame_interval}/`, dừng sau 300 frame và dùng `waitKey(15)`. Giá trị hiện tại là 60. Đường dẫn ảnh đã tồn tại sẽ được bỏ qua; kết quả ghi ảnh được kiểm tra.
 
-`src/detection/test_img.py` chạy YOLO11n trên các ảnh trong `outputs/frames/every_30/`, chỉ lấy lớp person và lưu ảnh có box vào `outputs/detection/yolo11n/every_30/`. Detection chờ phím từng ảnh, bỏ qua output đã có. Đã có 10 file kết quả tại thời điểm lưu; chưa đánh giá bằng nhãn chuẩn hoặc triển khai tracking.
+`src/detection/test_img.py` dùng biến model_name cho trọng số và output, đọc ảnh sạch từ `outputs/comparison/2026-10-20-yolo11n-vs-yolo11s/clean_test/inputs/`, lưu vào `outputs/detection/{model_name}/clean_every_30/`. Chờ phím từng ảnh, bỏ qua output đã có. Bộ input này cần lấy lại từ video gốc nếu clone repo vì ảnh không được commit.
 
-Chạy từ thư mục gốc bằng `python src/detection/test_img.py`, trong môi trường có OpenCV và Ultralytics; cần trọng số `models/yolo11n.pt` và ảnh đầu vào trên máy. Xem [ghi chú v03](versions/2026-10-19-v03/README.md) để biết thay đổi, giới hạn và cách chạy bản lưu.
+`src/detection/measure_speed.py` đo tốc độ trên ảnh lưu sẵn, hỗ trợ n/s và interval 15/30/60, xuất CSV sau warm-up. Ví dụ: `python src/detection/measure_speed.py --model yolo11n --interval 30`. Cần file trọng số có sẵn trong models/.
+
+`src/video/video_detect.py` chạy YOLO11n trực tiếp trên từng frame, hiển thị kết quả và cho phép thoát bằng q. Chạy bằng `python src/video/video_detect.py` từ project root. Hiện chưa ghi video, chưa giới hạn 300 frame và chưa có tracking.
+
+Chọn YOLO11n làm baseline CPU dựa trên [đánh giá model](docs/detection_model_comparison.md). Tổng quan thay đổi và các giới hạn ở [v04](versions/2026-10-22-v04/README.md). Code hiện vẫn nhận lớp person; phạm vi đánh giá chỉ cầu thủ không có nghĩa đã triển khai bộ lọc cầu thủ.
+
+Môi trường trên máy hiện tại là Conda footballtrack_env. Cấu hình .vscode có đường dẫn tuyệt đối riêng máy; cần điều chỉnh khi dùng trên máy khác.
 
 ## Luồng dữ liệu dự kiến
 
@@ -60,7 +71,7 @@ Phần đọc video cung cấp từng frame. Detection trả về vị trí đ�
 4. Sau đó mới bổ sung detection trên một ảnh, detection trên video và tracking.
 5. Khi một phần đã hiểu và chạy được, chuyển phần đó vào thư mục tương ứng trong `src/`.
 
-Đã có thử nghiệm detection pretrained trên ảnh; chưa triển khai tracking. Chưa tạo danh sách dependency hoặc chốt phiên bản thư viện, nên môi trường chưa được chuẩn hóa để tái lập trên máy khác.
+Đã có detection pretrained trên ảnh và hiển thị trực tiếp trên video; chưa triển khai tracking. Chưa tạo danh sách dependency hoặc chốt phiên bản thư viện, nên môi trường chưa được chuẩn hóa để tái lập trên máy khác.
 
 ## Quy ước
 
